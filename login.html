@@ -1,170 +1,296 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Peminjaman Gedung</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Peminjaman Gedung</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #2563eb, #1e3a8a);
+      padding: 20px;
+    }
 
-        .login-box {
-            width: 100%;
-            max-width: 400px;
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
 
-        h1 {
-            text-align: center;
-            color: #1769aa;
-            margin-bottom: 10px;
-        }
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+      color: #1e3a8a;
+    }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-        }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-        }
+    .tab {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #e5e7eb;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-        button {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 6px;
-            background: #1769aa;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+    .tab.active {
+      background: #2563eb;
+      color: white;
+    }
 
-        button:hover {
-            background: #0d4f82;
-        }
+    .login-form {
+      display: none;
+    }
 
-        .demo {
-            text-align: center;
-            color: #777;
-            font-size: 13px;
-            margin-top: 15px;
-        }
+    .login-form.active {
+      display: block;
+    }
 
-        .back {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #1769aa;
-            text-decoration: none;
-        }
-    </style>
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .info {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f3f4f6;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #2563eb;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="login-box">
+  <div class="container">
 
-    <h1>🏫 Login</h1>
+    <h1>🏫 Peminjaman Gedung</h1>
+    <p class="subtitle">Silakan pilih jenis pengguna</p>
 
-    <p class="subtitle">
-        Sistem Peminjaman Gedung Sekolah
-    </p>
+    <div class="tabs">
+      <button class="tab active" onclick="showLogin('siswa')">
+        👨‍🎓 Siswa
+      </button>
 
-    <form onsubmit="login(event)">
+      <button class="tab" onclick="showLogin('sekolah')">
+        🏫 Sekolah
+      </button>
+    </div>
 
-        <label for="username">Username</label>
+    <!-- LOGIN SISWA -->
+    <form id="loginSiswa" class="login-form active" onsubmit="loginSiswa(event)">
 
-        <input
-            type="text"
-            id="username"
-            placeholder="Masukkan username"
-            required
-        >
+      <h2>Login Siswa</h2>
 
-        <label for="password">Password</label>
+      <label>Username</label>
+      <input
+        type="text"
+        id="usernameSiswa"
+        placeholder="Masukkan username"
+        required
+      >
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Masukkan password"
-            required
-        >
+      <label>Password</label>
+      <input
+        type="password"
+        id="passwordSiswa"
+        placeholder="Masukkan password"
+        required
+      >
 
-        <button type="submit">
-            Login
-        </button>
+      <button class="btn" type="submit">
+        Login sebagai Siswa
+      </button>
+
+      <div class="info">
+        <b>Demo:</b><br>
+        Username: admin<br>
+        Password: admin123
+      </div>
 
     </form>
 
-    <p class="demo">
-        Demo: admin / admin123
-    </p>
+    <!-- LOGIN SEKOLAH -->
+    <form id="loginSekolah" class="login-form" onsubmit="loginSekolah(event)">
 
-    <a href="index.html" class="back">
-        ← Kembali ke Beranda
+      <h2>Login Pihak Sekolah</h2>
+
+      <label>Username</label>
+      <input
+        type="text"
+        id="usernameSekolah"
+        placeholder="Masukkan username sekolah"
+        required
+      >
+
+      <label>Password</label>
+      <input
+        type="password"
+        id="passwordSekolah"
+        placeholder="Masukkan password"
+        required
+      >
+
+      <button class="btn" type="submit">
+        Login sebagai Sekolah
+      </button>
+
+      <div class="info">
+        <b>Demo:</b><br>
+        Username: sekolah<br>
+        Password: sekolah123
+      </div>
+
+    </form>
+
+    <a class="back" href="index.html">
+      ← Kembali ke Beranda
     </a>
 
-</div>
+  </div>
 
-<script>
+  <script>
 
-const AUTH_KEY = "peminjamanGedungLoggedIn";
+    const AUTH_KEY = "peminjamanGedungLoggedIn";
+    const ROLE_KEY = "peminjamanGedungRole";
 
-function login(event) {
+    function showLogin(type) {
 
-    event.preventDefault();
+      const siswa = document.getElementById("loginSiswa");
+      const sekolah = document.getElementById("loginSekolah");
+      const tabs = document.querySelectorAll(".tab");
 
-    const username =
-        document.getElementById("username").value.trim();
+      if (type === "siswa") {
 
-    const password =
-        document.getElementById("password").value;
+        siswa.classList.add("active");
+        sekolah.classList.remove("active");
 
-    if (username === "admin" && password === "admin123") {
+        tabs[0].classList.add("active");
+        tabs[1].classList.remove("active");
 
-        sessionStorage.setItem(AUTH_KEY, "true");
+      } else {
 
-        window.location.replace("dashboard.html");
+        siswa.classList.remove("active");
+        sekolah.classList.add("active");
 
-    } else {
+        tabs[0].classList.remove("active");
+        tabs[1].classList.add("active");
 
-        alert("Username atau password salah!");
-
+      }
     }
 
-}
 
-</script>
+    function loginSiswa(event) {
+
+      event.preventDefault();
+
+      const username =
+        document.getElementById("usernameSiswa").value;
+
+      const password =
+        document.getElementById("passwordSiswa").value;
+
+      if (username === "admin" && password === "admin123") {
+
+        sessionStorage.setItem(AUTH_KEY, "true");
+        sessionStorage.setItem(ROLE_KEY, "siswa");
+
+        window.location.href = "dashboard.html";
+
+      } else {
+
+        alert("Username atau password siswa salah!");
+
+      }
+    }
+
+
+    function loginSekolah(event) {
+
+      event.preventDefault();
+
+      const username =
+        document.getElementById("usernameSekolah").value;
+
+      const password =
+        document.getElementById("passwordSekolah").value;
+
+      if (username === "sekolah" && password === "sekolah123") {
+
+        sessionStorage.setItem(AUTH_KEY, "true");
+        sessionStorage.setItem(ROLE_KEY, "sekolah");
+
+        window.location.href = "admin-dashboard.html";
+
+      } else {
+
+        alert("Username atau password sekolah salah!");
+
+      }
+    }
+
+  </script>
 
 </body>
 </html>
