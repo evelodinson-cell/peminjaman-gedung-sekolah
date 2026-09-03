@@ -7,15 +7,14 @@
 
     <style>
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
 
         body {
-            background: #f4f6f9;
+            margin: 0;
             min-height: 100vh;
+            background: #f4f6f9;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,21 +22,21 @@
         }
 
         .login-box {
-            background: white;
             width: 100%;
             max-width: 400px;
+            background: white;
             padding: 35px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .login-box h1 {
+        h1 {
             text-align: center;
             color: #1769aa;
             margin-bottom: 10px;
         }
 
-        .login-box p {
+        .subtitle {
             text-align: center;
             color: #666;
             margin-bottom: 30px;
@@ -74,6 +73,13 @@
             background: #0d4f82;
         }
 
+        .demo {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
         .back {
             display: block;
             text-align: center;
@@ -86,56 +92,79 @@
 
 <body>
 
-    <div class="login-box">
+<div class="login-box">
 
-        <h1>🏫 Login</h1>
+    <h1>🏫 Login</h1>
 
-        <p>Sistem Peminjaman Gedung Sekolah</p>
+    <p class="subtitle">
+        Sistem Peminjaman Gedung Sekolah
+    </p>
 
-        <form onsubmit="login(event)">
+    <form onsubmit="login(event)">
 
-            <label for="username">Username</label>
-            <input
-                type="text"
-                id="username"
-                placeholder="Masukkan username"
-                required
-            >
+        <label for="username">Username</label>
 
-            <label for="password">Password</label>
-            <input
-                type="password"
-                id="password"
-                placeholder="Masukkan password"
-                required
-            >
+        <input
+            type="text"
+            id="username"
+            placeholder="Masukkan username"
+            required
+        >
 
-            <button type="submit">
-                Login
-            </button>
+        <label for="password">Password</label>
 
-        </form>
+        <input
+            type="password"
+            id="password"
+            placeholder="Masukkan password"
+            required
+        >
 
-        <a href="index.html" class="back">
-            ← Kembali ke Beranda
-        </a>
+        <button type="submit">
+            Login
+        </button>
 
-    </div>
+    </form>
 
-    <script>
-        function login(event) {
-            event.preventDefault();
+    <p class="demo">
+        Demo: admin / admin123
+    </p>
 
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+    <a href="index.html" class="back">
+        ← Kembali ke Beranda
+    </a>
 
-            if (username === "admin" && password === "admin123") {
-                window.location.href = "dashboard.html";
-            } else {
-                alert("Username atau password salah!");
-            }
-        }
-    </script>
+</div>
+
+<script>
+
+const AUTH_KEY = "peminjamanGedungLoggedIn";
+
+function login(event) {
+
+    event.preventDefault();
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    if (username === "admin" && password === "admin123") {
+
+        sessionStorage.setItem(AUTH_KEY, "true");
+
+        window.location.replace("dashboard.html");
+
+    } else {
+
+        alert("Username atau password salah!");
+
+    }
+
+}
+
+</script>
 
 </body>
 </html>
