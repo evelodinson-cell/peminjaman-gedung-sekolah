@@ -1,1 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Gedung</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background: #1769aa;
+            color: white;
+            padding: 20px;
+        }
+
+        .navbar {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logout {
+            border: none;
+            background: #d9534f;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #1769aa;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #1769aa;
+            text-decoration: none;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .icon {
+            font-size: 45px;
+        }
+
+        .card h3 {
+            color: #1769aa;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            background: #1769aa;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+        <div class="logo">🏫 Peminjaman Gedung Sekolah</div>
+
+        <button class="logout" onclick="logout()">
+            Logout
+        </button>
+    </div>
+</header>
+
+<div class="container">
+
+    <a href="dashboard.html" class="back">
+        ← Kembali ke Dashboard
+    </a>
+
+    <h1>🏢 Data Gedung</h1>
+
+    <p>
+        Berikut adalah daftar gedung yang tersedia untuk dipinjam.
+    </p>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="icon">🏫</div>
+
+            <h3>Aula Sekolah</h3>
+
+            <p>
+                Kapasitas: 200 orang<br>
+                Fasilitas: Kursi, meja, sound system,
+                dan proyektor.
+            </p>
+
+            <a href="peminjaman.html?gedung=Aula%20Sekolah"
+               class="button">
+                Pilih Gedung
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="icon">📚</div>
+
+            <h3>Ruang Serbaguna</h3>
+
+            <p>
+                Kapasitas: 100 orang<br>
+                Fasilitas: Kursi, meja, papan tulis,
+                dan proyektor.
+            </p>
+
+            <a href="peminjaman.html?gedung=Ruang%20Serbaguna"
+               class="button">
+                Pilih Gedung
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="icon">⚽</div>
+
+            <h3>Lapangan Sekolah</h3>
+
+            <p>
+                Kapasitas: 300 orang<br>
+                Fasilitas: Lapangan terbuka dan
+                tribun penonton.
+            </p>
+
+            <a href="peminjaman.html?gedung=Lapangan%20Sekolah"
+               class="button">
+                Pilih Gedung
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const AUTH_KEY = "peminjamanGedungLoggedIn";
+
+    if (sessionStorage.getItem(AUTH_KEY) !== "true") {
+        window.location.replace("login.html");
+    }
+
+    function logout() {
+        sessionStorage.removeItem(AUTH_KEY);
+        window.location.replace("login.html");
+    }
+</script>
+
+</body>
+</html>
