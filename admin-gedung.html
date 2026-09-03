@@ -1,1 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Gedung - Sekolah</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    header {
+      background: #1e3a8a;
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 25px auto;
+      padding: 0 20px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.08);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #1e3a8a;
+    }
+
+    .gedung {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .gedung:last-child {
+      margin-bottom: 0;
+    }
+
+    .gedung h3 {
+      margin-top: 0;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 20px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .fasilitas {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>🏢 Data Gedung Sekolah</h2>
+</header>
+
+<div class="container">
+
+  <a class="back" href="admin-dashboard.html">
+    ← Kembali ke Dashboard
+  </a>
+
+  <div class="card">
+
+    <h2>Daftar Gedung</h2>
+
+    <div class="gedung">
+
+      <h3>🏫 Aula Sekolah</h3>
+
+      <p>
+        <b>Kapasitas:</b> 200 orang
+      </p>
+
+      <p><b>Fasilitas:</b></p>
+
+      <ul class="fasilitas">
+        <li>Kursi</li>
+        <li>Meja</li>
+        <li>Sound system</li>
+        <li>Proyektor</li>
+      </ul>
+
+      <span class="status">
+        Tersedia
+      </span>
+
+    </div>
+
+
+    <div class="gedung">
+
+      <h3>🏢 Ruang Serbaguna</h3>
+
+      <p>
+        <b>Kapasitas:</b> 100 orang
+      </p>
+
+      <p><b>Fasilitas:</b></p>
+
+      <ul class="fasilitas">
+        <li>Kursi</li>
+        <li>Meja</li>
+        <li>Whiteboard</li>
+        <li>Proyektor</li>
+      </ul>
+
+      <span class="status">
+        Tersedia
+      </span>
+
+    </div>
+
+
+    <div class="gedung">
+
+      <h3>⚽ Lapangan Sekolah</h3>
+
+      <p>
+        <b>Kapasitas:</b> 300 orang
+      </p>
+
+      <p><b>Fasilitas:</b></p>
+
+      <ul class="fasilitas">
+        <li>Lapangan terbuka</li>
+        <li>Tribun</li>
+      </ul>
+
+      <span class="status">
+        Tersedia
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  const AUTH_KEY = "peminjamanGedungLoggedIn";
+  const ROLE_KEY = "peminjamanGedungRole";
+
+  // Hanya pihak sekolah yang boleh membuka halaman ini
+  if (
+    sessionStorage.getItem(AUTH_KEY) !== "true" ||
+    sessionStorage.getItem(ROLE_KEY) !== "sekolah"
+  ) {
+    window.location.replace("login.html");
+  }
+
+</script>
+
+</body>
+</html>
