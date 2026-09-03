@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Sekolah</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    header {
+      background: #1e3a8a;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .logout {
+      background: white;
+      color: #1e3a8a;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .welcome {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.08);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.08);
+    }
+
+    .card h2 {
+      margin-top: 0;
+    }
+
+    .number {
+      font-size: 35px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    .menu {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 11px 16px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .menu:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🏫 Dashboard Pihak Sekolah</h1>
+
+    <button class="logout" onclick="logout()">
+      Logout
+    </button>
+  </header>
+
+  <div class="container">
+
+    <div class="welcome">
+      <h2>Selamat Datang, Pihak Sekolah</h2>
+      <p>
+        Di halaman ini sekolah dapat mengelola pengajuan
+        peminjaman gedung.
+      </p>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <h2>📋 Pengajuan</h2>
+        <p class="number" id="jumlahPengajuan">0</p>
+        <p>Total pengajuan peminjaman.</p>
+
+        <a class="menu" href="admin-pengajuan.html">
+          Lihat Pengajuan
+        </a>
+      </div>
+
+      <div class="card">
+        <h2>🏢 Data Gedung</h2>
+        <p>Kelola informasi gedung sekolah.</p>
+
+        <a class="menu" href="admin-gedung.html">
+          Data Gedung
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const AUTH_KEY = "peminjamanGedungLoggedIn";
+    const ROLE_KEY = "peminjamanGedungRole";
+
+    // Cek login
+    if (
+      sessionStorage.getItem(AUTH_KEY) !== "true" ||
+      sessionStorage.getItem(ROLE_KEY) !== "sekolah"
+    ) {
+      window.location.replace("login.html");
+    }
+
+    // Hitung pengajuan
+    const data =
+      JSON.parse(localStorage.getItem("dataPeminjaman")) || [];
+
+    document.getElementById("jumlahPengajuan").textContent =
+      data.length;
+
+    function logout() {
+
+      sessionStorage.removeItem(AUTH_KEY);
+      sessionStorage.removeItem(ROLE_KEY);
+
+      window.location.replace("login.html");
+    }
+
+  </script>
+
+</body>
+</html>
