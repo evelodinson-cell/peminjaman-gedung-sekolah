@@ -1,1 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengajuan Peminjaman</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f4f6;
+    }
+
+    header {
+      background: #1e3a8a;
+      color: white;
+      padding: 18px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 25px auto;
+      padding: 0 20px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.08);
+    }
+
+    .item {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+    }
+
+    .item h3 {
+      margin-top: 0;
+      color: #1e3a8a;
+    }
+
+    .detail {
+      margin: 7px 0;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status.disetujui {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.ditolak {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    button {
+      border: none;
+      padding: 10px 15px;
+      border-radius: 7px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-top: 12px;
+    }
+
+    .setuju {
+      background: #16a34a;
+    }
+
+    .tolak {
+      background: #dc2626;
+    }
+
+    .hapus {
+      background: #6b7280;
+    }
+
+    .kosong {
+      text-align: center;
+      color: #666;
+      padding: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>📋 Pengajuan Peminjaman</h2>
+</header>
+
+<div class="container">
+
+  <a class="back" href="admin-dashboard.html">
+    ← Kembali ke Dashboard
+  </a>
+
+  <div class="card">
+
+    <h2>Daftar Pengajuan</h2>
+
+    <div id="daftarPengajuan"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+  const AUTH_KEY = "peminjamanGedungLoggedIn";
+  const ROLE_KEY = "peminjamanGedungRole";
+
+  // Pastikan hanya pihak sekolah yang dapat membuka halaman ini
+  if (
+    sessionStorage.getItem(AUTH_KEY) !== "true" ||
+    sessionStorage.getItem(ROLE_KEY) !== "sekolah"
+  ) {
+    window.location.replace("login.html");
+  }
+
+  function tampilkanPengajuan() {
+
+    const container = document.getElementById("daftarPengajuan");
+
+    const data =
+      JSON.parse(localStorage.getItem("dataPeminjaman")) || [];
+
+    container.innerHTML = "";
+
+    if (data.length === 0) {
+
+      container.innerHTML = `
+        <div class="kosong">
+          <h3>Belum ada pengajuan</h3>
+          <p>Belum ada siswa yang mengajukan peminjaman.</p>
+        </div>
+      `;
+
+      return;
+    }
+
+    data.forEach((item, index) => {
+
+      const div = document.createElement("div");
+
+      div.className = "item";
+
+      div.innerHTML = `
+        <h3>Pengajuan #${index + 1}</h3>
+
+        <p class="detail">
+          👤 <b>Nama:</b> ${item.nama || "-"}
+        </p>
+
+        <p class="detail">
+          📞 <b>Kontak:</b> ${item.kontak || "-"}
+        </p>
+
+        <p class="detail">
+          🏢 <b>Gedung:</b> ${item.gedung || "-"}
+        </p>
+
+        <p class="detail">
+          📅 <b>Tanggal:</b> ${item.tanggal || "-"}
+        </p>
+
+        <p class="detail">
+          🕐 <b>Waktu:</b>
+          ${item.jamMulai || "-"} -
+          ${item.jamSelesai || "-"}
+        </p>
+
+        <p class="detail">
+          📝 <b>Keperluan:</b> ${item.keperluan || "-"}
+        </p>
+
+        <span class="status ${getStatusClass(item.status)}">
+          ${item.status || "Menunggu Persetujuan"}
+        </span>
+
+        ${
+          item.status !== "Disetujui" &&
+          item.status !== "Ditolak"
+          ?
+          `
+          <br>
+
+          <button
+            class="setuju"
+            onclick="ubahStatus(${index}, 'Disetujui')">
+            ✅ Setujui
+          </button>
+
+          <button
+            class="tolak"
+            onclick="ubahStatus(${index}, 'Ditolak')">
+            ❌ Tolak
+          </button>
+          `
+          :
+          `
+          <br>
+
+          <button
+            class="hapus"
+            onclick="hapusPengajuan(${index})">
+            🗑 Hapus
+          </button>
+          `
+        }
+      `;
+
+      container.appendChild(div);
+
+    });
+
+  }
+
+
+  function getStatusClass(status) {
+
+    if (status === "Disetujui") {
+      return "disetujui";
+    }
+
+    if (status === "Ditolak") {
+      return "ditolak";
+    }
+
+    return "";
+
+  }
+
+
+  function ubahStatus(index, statusBaru) {
+
+    const data =
+      JSON.parse(localStorage.getItem("dataPeminjaman")) || [];
+
+    if (!data[index]) {
+      return;
+    }
+
+    data[index].status = statusBaru;
+
+    localStorage.setItem(
+      "dataPeminjaman",
+      JSON.stringify(data)
+    );
+
+    tampilkanPengajuan();
+
+  }
+
+
+  function hapusPengajuan(index) {
+
+    if (!confirm("Hapus pengajuan ini?")) {
+      return;
+    }
+
+    const data =
+      JSON.parse(localStorage.getItem("dataPeminjaman")) || [];
+
+    data.splice(index, 1);
+
+    localStorage.setItem(
+      "dataPeminjaman",
+      JSON.stringify(data)
+    );
+
+    tampilkanPengajuan();
+
+  }
+
+
+  tampilkanPengajuan();
+
+</script>
+
+</body>
+</html>
