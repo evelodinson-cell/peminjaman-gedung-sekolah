@@ -1,1 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Peminjaman</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background: #1769aa;
+            color: white;
+            padding: 20px;
+        }
+
+        .navbar {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logout {
+            border: none;
+            background: #d9534f;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            color: #1769aa;
+            text-decoration: none;
+        }
+
+        h1 {
+            color: #1769aa;
+        }
+
+        .item {
+            background: white;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .item h3 {
+            margin-top: 0;
+            color: #1769aa;
+        }
+
+        .item p {
+            line-height: 1.7;
+            margin: 7px 0;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            background: #fff3cd;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            margin-top: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #666;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 16px;
+            background: #1769aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+
+        <div class="logo">
+            🏫 Peminjaman Gedung Sekolah
+        </div>
+
+        <button class="logout" onclick="logout()">
+            Logout
+        </button>
+
+    </div>
+</header>
+
+<div class="container">
+
+    <a href="dashboard.html" class="back">
+        ← Kembali ke Dashboard
+    </a>
+
+    <h1>📋 Status Peminjaman</h1>
+
+    <p>
+        Berikut adalah daftar pengajuan peminjaman.
+    </p>
+
+    <div id="daftar"></div>
+
+</div>
+
+<script>
+
+const AUTH_KEY = "peminjamanGedungLoggedIn";
+
+if (sessionStorage.getItem(AUTH_KEY) !== "true") {
+    window.location.replace("login.html");
+}
+
+
+function tampilkanData() {
+
+    const daftar =
+        document.getElementById("daftar");
+
+    const data =
+        JSON.parse(
+            localStorage.getItem("dataPeminjaman")
+        ) || [];
+
+
+    if (data.length === 0) {
+
+        daftar.innerHTML = `
+            <div class="empty">
+
+                <h3>Belum ada pengajuan</h3>
+
+                <p>
+                    Kamu belum memiliki pengajuan
+                    peminjaman gedung.
+                </p>
+
+                <a
+                    href="peminjaman.html"
+                    class="button"
+                >
+                    Buat Pengajuan
+                </a>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    daftar.innerHTML = "";
+
+
+    data.reverse().forEach(function(item) {
+
+        const tanggal =
+            new Date(item.tanggal + "T00:00:00")
+            .toLocaleDateString(
+                "id-ID",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
+
+        daftar.innerHTML += `
+
+            <div class="item">
+
+                <h3>
+                    🏢 ${item.gedung}
+                </h3>
+
+                <p>
+                    <strong>Nama:</strong>
+                    ${item.nama}
+                </p>
+
+                <p>
+                    <strong>Kontak:</strong>
+                    ${item.kontak}
+                </p>
+
+                <p>
+                    <strong>Tanggal:</strong>
+                    ${tanggal}
+                </p>
+
+                <p>
+                    <strong>Waktu:</strong>
+                    ${item.jamMulai}
+                    -
+                    ${item.jamSelesai}
+                </p>
+
+                <p>
+                    <strong>Keperluan:</strong>
+                    ${item.keperluan}
+                </p>
+
+                <span class="status">
+                    ${item.status}
+                </span>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+function logout() {
+
+    sessionStorage.removeItem(AUTH_KEY);
+
+    window.location.replace("login.html");
+
+}
+
+
+tampilkanData();
+
+</script>
+
+</body>
+</html>
